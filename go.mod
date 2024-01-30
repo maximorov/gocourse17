@@ -1,5 +1,15 @@
-module reflection
+module gocourse17
 
-go 1.19
+go 1.21
 
-require github.com/maximorov/auditor v0.0.0-20221221093606-fa7b37220abb // indirect
+require google.golang.org/grpc v1.61.0
+
+require (
+	github.com/golang/protobuf v1.5.3 // indirect
+	github.com/gorilla/mux v1.8.1 // indirect
+	golang.org/x/net v0.18.0 // indirect
+	golang.org/x/sys v0.14.0 // indirect
+	golang.org/x/text v0.14.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20231106174013-bbf56f31fb17 // indirect
+	google.golang.org/protobuf v1.31.0 // indirect
+)

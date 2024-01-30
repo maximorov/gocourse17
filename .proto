@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package patient;
+
+option go_package = "./gocourse17";
+
+// Сервіс PatientService для обробки даних пацієнтів
+service PatientService {
+  rpc AddPatient(AddPatientRequest) returns (AddPatientResponse);
+  rpc GetPatient(GetPatientRequest) returns (GetPatientResponse);
+  rpc UpdatePatient(UpdatePatientRequest) returns (UpdatePatientResponse);
+}
+
+// Запит для додавання пацієнта
+message AddPatientRequest {
+  Patient patient = 1;
+}
+
+// Відповідь на додавання пацієнта
+message AddPatientResponse {
+  string message = 1;
+}
+
+// Запит для отримання даних пацієнта
+message GetPatientRequest {
+  string id = 1;
+}
+
+// Відповідь на отримання даних пацієнта
+message GetPatientResponse {
+  Patient patient = 1;
+}
+
+// Запит для оновлення даних пацієнта
+message UpdatePatientRequest {
+  Patient patient = 1;
+}
+
+// Відповідь на оновлення даних пацієнта
+message UpdatePatientResponse {
+  string message = 1;
+}
+
+// Структура даних пацієнта
+message Patient {
+  string id = 1;
+  string name = 2;
+  string age = 3;
+  string diagnosis = 4;
+}
