@@ -15,7 +15,7 @@ type Patients struct {
 	pb.UnimplementedPatientServiceServer
 }
 
-func (s *Patients) Add(ctx context.Context, in *pb.AddPatientRequest) (*pb.AddPatientResponse, error) {
+func (s *Patients) AddPatient(ctx context.Context, in *pb.AddPatientRequest) (*pb.AddPatientResponse, error) {
 	patientEntity := patients.Patient{
 		in.GetPatient().Id,
 		in.GetPatient().Name,
@@ -24,13 +24,13 @@ func (s *Patients) Add(ctx context.Context, in *pb.AddPatientRequest) (*pb.AddPa
 	}
 
 	if _, err := s.service.AddPatient(ctx, &patientEntity); err != nil {
-		return &pb.AddPatientResponse{Message: "Patient added successfully"}, nil
-	} else {
 		return nil, err
+	} else {
+		return &pb.AddPatientResponse{Message: "Patient added successfully"}, nil
 	}
 }
 
-func (s *Patients) Get(ctx context.Context, in *pb.GetPatientRequest) (*pb.GetPatientResponse, error) {
+func (s *Patients) GetPatient(ctx context.Context, in *pb.GetPatientRequest) (*pb.GetPatientResponse, error) {
 	if res, err := s.service.GetPatient(ctx, in.GetId()); err != nil {
 		return nil, err
 	} else {
@@ -43,7 +43,7 @@ func (s *Patients) Get(ctx context.Context, in *pb.GetPatientRequest) (*pb.GetPa
 	}
 }
 
-func (s *Patients) Update(ctx context.Context, in *pb.UpdatePatientRequest) (*pb.UpdatePatientResponse, error) {
+func (s *Patients) UpdatePatient(ctx context.Context, in *pb.UpdatePatientRequest) (*pb.UpdatePatientResponse, error) {
 	patientEntity := patients.Patient{
 		in.GetPatient().Id,
 		in.GetPatient().Name,

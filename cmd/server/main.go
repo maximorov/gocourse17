@@ -25,7 +25,7 @@ func main() {
 
 	patientsService := patients.NewService()
 
-	// start the http server
+	// start the grpc server
 	go func() {
 		waitForTheEnd.Add(1)
 		defer waitForTheEnd.Done()
@@ -37,13 +37,17 @@ func main() {
 			log.Fatalf("failed to listen: %v", err)
 		}
 		s := grpc.NewServer()
+		defer func() {
+			<-ctx.Done()
+			s.Stop()
+		}()
 		pb.RegisterPatientServiceServer(s, server)
 		if err := s.Serve(lis); err != nil {
 			log.Fatalf("failed to serve: %v", err)
 		}
 	}()
 
-	// start the scheduler service
+	// start the rest server
 	go func() {
 		waitForTheEnd.Add(1)
 		defer waitForTheEnd.Done()
@@ -56,7 +60,12 @@ func main() {
 		router.HandleFunc("/patients/{id}", handler.GetPatient).Methods("GET")
 		router.HandleFunc("/patients/{id}", handler.UpdatePatient).Methods("PUT")
 
-		if err := http.ListenAndServe(":8080", router); err != nil {
+		server := &http.Server{Addr: ":8080", Handler: router}
+		defer func() {
+			<-ctx.Done()
+			_ = server.Shutdown(ctx)
+		}()
+		if err := server.ListenAndServe(); err != nil {
 			log.Fatalf("failed to serve: %v", err)
 		}
 	}()
